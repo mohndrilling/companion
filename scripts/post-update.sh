@@ -378,6 +378,12 @@ if (( $PRE_0_0_23 > 0 )); then
     rm -rf $HOME/telemetry
 fi
 
+# DVL stuff, unguarded because there is no tag
+sudo apt install -y python3-pip
+sudo python3 $HOME/companion/services/network/setup.py install
+sudo python3 $HOME/companion/services/waterlinked/dvl-a50/setup.py install
+
+
 echo 'Update Complete, the system will reboot now.'
 echo 'Wait for 30 seconds and refresh the page.'
 
