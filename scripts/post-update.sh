@@ -370,7 +370,7 @@ if (( $PRE_0_0_23 > 0 )); then
         # delete any --aircraft line if it already exists
         sed -i '/--aircraft*/d' $USER_MAVPROXY_PARAMS
         # force SERIAL0_PROTOCOL parameter to mavlink2
-        sed -i '$ a --cmd="param forceload ~/companion/params/serial0.param"' $USER_MAVPROXY_PARAMS
+        sed -i '$ a --cmd="param forceload /home/pi/companion/params/serial0.param"' $USER_MAVPROXY_PARAMS
         # store logs in the /tmp directory
         sed -i '$ a --logfile=/tmp/telemetry.tlog' $USER_MAVPROXY_PARAMS
     fi
