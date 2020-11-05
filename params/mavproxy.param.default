@@ -2,7 +2,7 @@
 --load-module='GPSInput,DepthOutput'
 --source-system=200
 --cmd="set heartbeat 0"
---cmd="param forceload ~/companion/params/serial0.param"
+--cmd="param forceload /home/pi/companion/params/serial0.param"
 --logfile=/tmp/telemetry.tlog
 --out udpin:localhost:9000
 --out udpout:localhost:9002
