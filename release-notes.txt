@@ -148,3 +148,9 @@ Initial release
 - Update mavlink2rest to [0.7.3](https://github.com/patrickelectric/mavlink2rest/releases/tag/0.7.3)
 - Update bridges to [0.5.0](https://github.com/patrickelectric/bridges/releases/tag/0.5.0)
 - Drop ssh-agent/ssh support in /git page
+
+0.0.23:
+- Automatically configure autopilot to use mavlink2
+- Bugfix excessive disk space usage and mavproxy not starting when disk is full
+    - Delete existing logs in /home/pi/telemetry folder
+    - Store logs in temporary directory /tmp instead of pi user folder
