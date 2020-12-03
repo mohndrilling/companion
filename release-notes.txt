@@ -154,3 +154,9 @@ Initial release
 - Bugfix excessive disk space usage and mavproxy not starting when disk is full
     - Delete existing logs in /home/pi/telemetry folder
     - Store logs in temporary directory /tmp instead of pi user folder
+
+0.0.24:
+- Use 'Pixhawk1' firmware instead of 'fmuv2' for beta ardusub firmware update
+    - fmuv2 has 1M flash limitation and some features disabled
+- Bugfix do not attempt filesystem resize on every boot
+    - filesystem is expaneded once on first boot
