@@ -74,6 +74,17 @@ def main():
                                               source_component=192
                                               )
 
+    ## Set RNGFND1_TYPE to MavLink
+    ## This file will only run if ping1d is detected, so we don't need to check for its presence again
+    autopilot_io.mav.param_set_send(
+        autopilot_io.target_system,
+        autopilot_io.target_component,
+        b"RNGFND1_TYPE",
+        10,
+        mavutil.mavlink.MAV_PARAM_TYPE_INT8
+    )
+
+
     ping1d_io = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     ping1d_io.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     ping1d_io.setblocking(False)
