@@ -381,7 +381,7 @@ fi
 # DVL stuff, unguarded because there is no tag
 sudo apt install -y python3-pip
 sudo python3 $HOME/companion/services/network/setup.py install
-sudo python3 $HOME/companion/services/waterlinked/dvl-a50/setup.py install
+sudo pip3 install $HOME/companion/services/waterlinked/dvl-a50/
 
 
 echo 'Update Complete, the system will reboot now.'
