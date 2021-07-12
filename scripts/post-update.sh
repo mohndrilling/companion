@@ -356,8 +356,10 @@ fi
 PRE_0_0_22=$(( git rev-list --count --left-right 0.0.22...revert-point || echo 0 ) | cut -f1)
 
 if (( $PRE_0_0_22 > 0 )); then
+    # setup-tools is unable to find bottle, so we use pip instead.
+    # pip requires that we cd into the directory before installing for things to work properly.
     sudo apt install -y python3-pip
-    sudo python3 $HOME/companion/services/network/setup.py install
+    cd $HOME/companion/services/network/ && sudo pip3 install . && cd -
 fi
 
 PRE_0_0_23=$(( git rev-list --count --left-right 0.0.23...revert-point || echo 0 ) | cut -f1)
