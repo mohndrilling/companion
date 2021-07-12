@@ -379,6 +379,16 @@ if (( $PRE_0_0_23 > 0 )); then
     # remove old logs (free disk space)
     rm -rf $HOME/telemetry
 fi
+PRE_0_0_27=$(( git rev-list --count --left-right 0.0.27...revert-point || echo 0 ) | cut -f1)
+
+if (( $PRE_0_0_27 > 0 )); then
+    # reconfigure only if a user configuration exists in the home directory
+    USER_MAVPROXY_PARAMS=$HOME/mavproxy.param
+    if [ -e $USER_MAVPROXY_PARAMS ]; then
+        # delete now-unused mavlink2rest endpoint
+        sed -i '/--out udpout:localhost:9002/d' $USER_MAVPROXY_PARAMS
+    fi
+fi
 
 echo 'Update Complete, the system will reboot now.'
 echo 'Wait for 30 seconds and refresh the page.'
