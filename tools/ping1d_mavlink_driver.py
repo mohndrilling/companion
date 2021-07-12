@@ -42,7 +42,13 @@ def main():
     """ Main function
     """
 
-    if not is_compatible_ardusub_version():
+    autopilot_io = mavutil.mavlink_connection("udpout:" + ARGS.mavlink,
+                                              source_system=1,
+                                              source_component=192
+                                              )
+
+    if not is_compatible_ardusub_version(autopilot_io):
+        print("Uncompatible ardusub version, aborting...")
         exit(-1)
     ## The time that this script was started
     tboot = time.time()
@@ -68,11 +74,6 @@ def main():
 
     pingargs = ARGS.ping.split(':')
     pingserver = (pingargs[0], int(pingargs[1]))
-
-    autopilot_io = mavutil.mavlink_connection("udpout:" + ARGS.mavlink,
-                                              source_system=1,
-                                              source_component=192
-                                              )
 
     ## Set RNGFND1_TYPE to MavLink
     ## This file will only run if ping1d is detected, so we don't need to check for its presence again
@@ -151,25 +152,29 @@ def main():
                     send_distance_data(distance, deviceid, confidence)
 
 
-def is_compatible_ardusub_version():
+def is_compatible_ardusub_version(autopilot):
     """
     Checks if the running ardusub version is 4.0.0 or newer
     (4.0.0 disabled use of rangefinder for depth control)
     """
     while True:
-        r = requests.get('http://127.0.0.1:4777/mavlink/AUTOPILOT_VERSION/flight_sw_version')
-        # TO-DO: fix next line when https://github.com/patrickelectric/mavlink2rest/issues/3 is solved
-        if "No valid path" in r.text or r.status_code == 404:
-            print("could not read firmware version, retrying in 5 seconds...")
-            time.sleep(5)
-            continue
-        flight_sw_version = r.json()
-        majorVersion = (flight_sw_version >> (8*3)) & 0xFF # bit-fu to extract major version
-        if majorVersion < 4:
-            print("This driver requires ardusub >= 4.0.0, halting...")
-            return False
-        print("Valid ardusub version found, starting code...")
-        return True
+        # Send request for autopilot version
+        autopilot.mav.autopilot_version_request_send(
+            autopilot.target_system,
+            autopilot.target_component
+        )
+        msg = autopilot.recv_match(type='AUTOPILOT_VERSION')
+
+        # Check if version information was obtained
+        # Print version
+        if msg:
+            version_d = msg.to_dict()
+            version_hex = version_d["flight_sw_version"]
+            # This returns something like 0x40003ff
+            major = (version_hex >> (8*3)) & 0xFF # bit-fu to extract major version
+            return major >= 4
+        time.sleep(1)
+
 
 if __name__ == '__main__':
     main()
