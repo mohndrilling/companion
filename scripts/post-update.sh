@@ -387,6 +387,14 @@ if (( $PRE_0_0_27 > 0 )); then
     if [ -e $USER_MAVPROXY_PARAMS ]; then
         # delete now-unused mavlink2rest endpoint
         sed -i '/--out udpout:localhost:9002/d' $USER_MAVPROXY_PARAMS
+        # delete any --default-modules line if it already exists
+        sed -i '/--default-modules=*/d' $USER_MAVPROXY_PARAMS
+        # add --default-modules=output
+        # This makes mavproxy load only the 'output' module by default.
+        # It saves around 5% of cpu usage.
+        # All modules are still available, it just takes a 'module load' to
+        # load them in runtime before using.
+        sed -i '$ a --default-modules=output' $USER_MAVPROXY_PARAMS
     fi
 fi
 
