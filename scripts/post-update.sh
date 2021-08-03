@@ -395,6 +395,10 @@ if (( $PRE_0_0_27 > 0 )); then
         # All modules are still available, it just takes a 'module load' to
         # load them in runtime before using.
         sed -i '$ a --default-modules=output' $USER_MAVPROXY_PARAMS
+        # cd into pymavlink folder to install with pip
+        cd /home/pi/companion/submodules/mavlink/pymavlink
+        sudo MDEF=/home/pi/companion/submodules/mavlink/message_definitions python -m pip install . -v --upgrade --force-reinstall
+        cd -
     fi
 fi
 
