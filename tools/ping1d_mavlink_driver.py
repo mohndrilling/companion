@@ -15,7 +15,7 @@ import requests
 from pymavlink import mavutil
 from brping import PingMessage
 from brping import PingParser
-from brping import PING1D_DISTANCE, PING1D_DISTANCE_SIMPLE, PING1D_PROFILE
+from brping import PING1D_DISTANCE, PING1D_DISTANCE_SIMPLE, PING1D_PROFILE, PING1D_SET_PING_INTERVAL
 
 PARSER = argparse.ArgumentParser(description="Ping1D to mavlink bridge.")
 PARSER.add_argument('--ping',
@@ -120,6 +120,15 @@ def main():
             deviceid, # device id
             orientation,
             covarience)
+
+    # set the ping interval once at startup
+    # the ping interval may change if another client to the pingproxy requests it
+    data = PingMessage()
+    data.request_id = PING1D_SET_PING_INTERVAL
+    data.src_device_id = 0
+    data.ping_interval = int(ping_interval_ms*1000)
+    data.pack_msg_data()
+    ping1d_io.sendto(data.msg_data, pingserver)
 
     while True:
         time.sleep(0.001)
