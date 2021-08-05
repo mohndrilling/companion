@@ -379,6 +379,7 @@ if (( $PRE_0_0_23 > 0 )); then
     # remove old logs (free disk space)
     rm -rf $HOME/telemetry
 fi
+
 PRE_0_0_27=$(( git rev-list --count --left-right 0.0.27...revert-point || echo 0 ) | cut -f1)
 
 if (( $PRE_0_0_27 > 0 )); then
@@ -399,6 +400,19 @@ if (( $PRE_0_0_27 > 0 )); then
         cd /home/pi/companion/submodules/mavlink/pymavlink
         sudo MDEF=/home/pi/companion/submodules/mavlink/message_definitions python -m pip install . -v --upgrade --force-reinstall
         cd -
+    fi
+fi
+
+PRE_0_0_28=$(( git rev-list --count --left-right 0.0.28...revert-point || echo 0 ) | cut -f1)
+
+if (( $PRE_0_0_28 > 0 )); then
+    # reconfigure only if a user configuration exists in the home directory
+    USER_MAVPROXY_PARAMS=$HOME/mavproxy.param
+    if [ -e $USER_MAVPROXY_PARAMS ]; then
+        # delete any --default-modules line if it already exists
+        sed -i '/--default-modules=*/d' $USER_MAVPROXY_PARAMS
+        # add --default-modules=output,param
+        sed -i '$ a --default-modules=output,param' $USER_MAVPROXY_PARAMS
     fi
 fi
 
