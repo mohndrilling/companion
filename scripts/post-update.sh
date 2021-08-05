@@ -413,6 +413,18 @@ if (( $PRE_0_0_28 > 0 )); then
         sed -i '/--default-modules=*/d' $USER_MAVPROXY_PARAMS
         # add --default-modules=output,param
         sed -i '$ a --default-modules=output,param' $USER_MAVPROXY_PARAMS
+
+        # this line would be duplicated if 0.0.23 update step were to be run twice
+        # delete any 'param forceload' line if it already exists
+        sed -i '/param forceload*/d' $USER_MAVPROXY_PARAMS
+        # force SERIAL0_PROTOCOL parameter to mavlink2
+        sed -i '$ a --cmd="param forceload /home/pi/companion/params/serial0.param"' $USER_MAVPROXY_PARAMS
+
+        # this line would be duplicated if 0.0.23 update step were to be run twice
+        # delete any --logfile line if it already exists
+        sed -i '/--logfile=*/d' $USER_MAVPROXY_PARAMS
+        # store logs in the /tmp directory
+        sed -i '$ a --logfile=/tmp/telemetry.tlog' $USER_MAVPROXY_PARAMS
     fi
 fi
 
