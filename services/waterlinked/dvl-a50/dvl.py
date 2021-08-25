@@ -375,6 +375,6 @@ class DvlDriver (threading.Thread):
                                      angles,
                                      dt=data["time"]*1e3,
                                      confidence=confidence)
-            if self.rangefinder:
+            if self.rangefinder and alt > 0:
                 self.mav.send_rangefinder(alt)
             time.sleep(0.003)
