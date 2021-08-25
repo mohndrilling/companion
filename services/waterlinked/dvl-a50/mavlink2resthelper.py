@@ -119,7 +119,11 @@ class Mavlink2RestHelper:
         """
         Returns the frequency at which message "message_name" is being received, 0 if unavailable
         """
-        return self.get_float('/{0}/message_information/frequency'.format(message_name))
+        try:
+            return self.get_float('/{0}/message_information/frequency'.format(message_name))
+        except:
+            # message is not available
+            return 0
 
     # TODO: Find a way to run this check for every message received without overhead
     # check https://github.com/patrickelectric/mavlink2rest/issues/9
