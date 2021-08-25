@@ -87,7 +87,8 @@ class Mavlink2RestHelper:
       0.0,
       0.0,
       0.0
-    ]
+    ],
+    "signal_quality":0
   }}
 }}
 """
