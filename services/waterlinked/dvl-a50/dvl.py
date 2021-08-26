@@ -373,7 +373,7 @@ class DvlDriver (threading.Thread):
                 # angles = self.update_attitude()
                 angles = [0, 0, 0]
             except Exception as error:
-                print("Error fetching data for DVL:", error)
+                print("Error fetching data from DVL:", error)
                 continue
 
             if self.current_orientation == DVL_DOWN:
