@@ -342,6 +342,13 @@ class DvlDriver (threading.Thread):
                 continue
 
             self.status = "Running"
+            
+            try:
+                if data["type"] != "velocity":
+                    # ignore non-velocity messages (e.g. dead-reckoning 'position_local' message)
+                    continue
+            except KeyError as error:
+                print("Invalid data message:", data)
 
             # TODO: test if this is used by ArduSub or could be [0, 0, 0]
             # extract velocity data from the DVL JSON
