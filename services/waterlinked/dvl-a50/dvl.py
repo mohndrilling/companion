@@ -344,6 +344,9 @@ class DvlDriver (threading.Thread):
             self.status = "Running"
             
             try:
+                status = data["status"]
+                if status != 0:
+                    print("DVL error detected:", status)
                 if data["type"] != "velocity":
                     # ignore non-velocity messages (e.g. dead-reckoning 'position_local' message)
                     continue
