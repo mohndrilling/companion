@@ -353,7 +353,8 @@ class DvlDriver (threading.Thread):
             # TODO: test if this is used by ArduSub or could be [0, 0, 0]
             # extract velocity data from the DVL JSON
             try:
-                vx, vy, vz, alt, valid, fom = data["vx"], data["vy"], data["vz"], data["altitude"], data["velocity_valid"], data["fom"]
+                vx, vy, vz, alt, valid, fom = (data[key] for key in
+                                               ("vx", "vy", "vz", "altitude", "velocity_valid", "fom"))
                 dt = data["time"] / 1000
                 dx = dt*vx
                 dy = dt*vy
