@@ -4,6 +4,12 @@ export DEBIAN_FRONTEND=noninteractive
 echo 'STARTING POST UPDATE'
 echo $(printenv)
 
+# point apt to the legacy mirrors instead
+# check https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=237469#p1852216
+# This will run every-time post-update.sh runs, and that should be fine.
+# Placing it here fixes updating from versions older than 0.0.28
+sudo sed -i 's/mirrordirector/legacy/g' /etc/apt/sources.list
+
 # Bugfix for revert on first update. 0.0.7 had a bug in update.sh where the companion directory was not copied correctly (no -r option)
 # Do it the right way here so we can revert if
 cd $HOME/companion
@@ -426,6 +432,14 @@ if (( $PRE_0_0_28 > 0 )); then
         # store logs in the /tmp directory
         sed -i '$ a --logfile=/tmp/telemetry.tlog' $USER_MAVPROXY_PARAMS
     fi
+fi
+
+
+PRE_0_0_29=$(( git rev-list --count --left-right 0.0.29...revert-point || echo 0 ) | cut -f1)
+
+if (( $PRE_0_0_29 > 0 )); then
+    # just update once to keep things in sync with the new (legacy) mirrors.
+    sudo apt update
 fi
 
 echo 'Update Complete, the system will reboot now.'
