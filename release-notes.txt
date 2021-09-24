@@ -181,3 +181,6 @@ Initial release
 - use floats for underwater gps latitude and longitude
 - fix regression in 0.0.27: add mavproxy param module to force mavlink2 communication
 - ping1d mavlink driver: change default device measurement interval from 2Hz to 10Hz
+
+0.0.29:
+ - Switch to Raspbian Jessie legacy mirrors
