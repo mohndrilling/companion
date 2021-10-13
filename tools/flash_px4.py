@@ -2,6 +2,7 @@
 
 import os
 from urllib2 import urlopen
+import ssl
 import time
 import sys
 import signal
@@ -55,7 +56,7 @@ else:
                                 print "Downloading stable ArduSub firmware from %s" % firmwareURL
 
                 try:
-                                firmwarefile = urlopen(firmwareURL)
+                                firmwarefile = urlopen(firmwareURL, context=ssl._create_unverified_context())
                                 with open("/tmp/ardusub.apj", "wb") as local_file:
                                     local_file.write(firmwarefile.read())
 
