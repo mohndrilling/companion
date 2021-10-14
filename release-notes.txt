@@ -184,3 +184,6 @@ Initial release
 
 0.0.29:
  - Switch to Raspbian Jessie legacy mirrors
+
+0.0.30:
+ - Disable ssl for firmware downloads from firmware.ardupilot.org
