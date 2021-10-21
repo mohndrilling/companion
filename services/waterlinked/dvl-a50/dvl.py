@@ -358,6 +358,15 @@ class DvlDriver (threading.Thread):
             try:
                 vx, vy, vz, alt, valid, fom = (data[key] for key in
                                                ("vx", "vy", "vz", "altitude", "velocity_valid", "fom"))
+
+                if not valid:
+                    if self.rangefinder:
+                        # notify of invalid value
+                        self.mav.send_rangefinder(0)
+                    print("Invalid DVL measurement:", data)
+                    # avoid sending invalid values as 'vision' estimate
+                    continue
+
                 dt = data["time"] / 1000
                 dx = dt*vx
                 dy = dt*vy
@@ -386,6 +395,6 @@ class DvlDriver (threading.Thread):
                                      angles,
                                      dt=data["time"]*1e3,
                                      confidence=confidence)
-            if self.rangefinder and alt > 0:
-                self.mav.send_rangefinder(alt)
+            if self.rangefinder:
+                self.mav.send_rangefinder(max(alt, 0))
             time.sleep(0.003)
