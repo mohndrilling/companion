@@ -441,10 +441,16 @@ if (( $PRE_0_0_29 > 0 )); then
     sudo apt update
 fi
 
-# DVL stuff, unguarded because there is no tag
-sudo apt install -y python3-pip
-sudo python3 $HOME/companion/services/network/setup.py install
-sudo pip3 install $HOME/companion/services/waterlinked/dvl-a50/
+# 30 was the unguarded `sed` at the start of the script
+
+PRE_0_0_31=$(( git rev-list --count --left-right 0.0.31...revert-point || echo 0 ) | cut -f1)
+
+if (( $PRE_0_0_31 > 0 )); then
+    # DVL stuff
+    sudo apt install -y python3-pip
+    sudo python3 $HOME/companion/services/network/setup.py install
+    sudo pip3 install $HOME/companion/services/waterlinked/dvl-a50/
+fi
 
 echo 'Update Complete, the system will reboot now.'
 echo 'Wait for 30 seconds and refresh the page.'
