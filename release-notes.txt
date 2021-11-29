@@ -187,3 +187,8 @@ Initial release
 
 0.0.30:
  - Disable ssl for firmware downloads from firmware.ardupilot.org
+
+0.0.31:
+- Merge Water Linked DVL-A50 functionality into main release
+- Stop the DVL service from sending invalid position messages, which ArduPilot erroneously consumes
+- Make DVL service communicate when rangefinder position lock lost
