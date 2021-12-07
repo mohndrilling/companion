@@ -74,12 +74,12 @@ os.system("screen -X -S mavproxy quit")
 # Flash Pixhawk
 print("Flashing Pixhawk...")
 if options.file is not None:
-    if(os.system("python -u " + home + "/flash_tool/uploader.py "
+    if(os.system("python -u /companion/tools/uploader.py "
     "'%s'" % options.file) != 0):
                 print("Error flashing pixhawk!")
                 exit(1)
 else:
-    if(os.system("python -u "+home+"/git_repos/companion/tools/uploader.py "
+    if(os.system("python -u /companion/tools/uploader.py "
     "/tmp/ardusub.apj") != 0):
                 print("Error flashing pixhawk! Do you have most recent version of companion? Try 'git pull' or scp.")
                 exit(1)
